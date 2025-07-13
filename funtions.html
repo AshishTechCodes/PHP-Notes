@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Function Types</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .function-type {
+            margin-bottom: 30px;
+            border-left: 4px solid #0d6efd;
+            padding: 15px;
+            background-color: #f8f9fa;
+        }
+        .function-title {
+            color: #0d6efd;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+        .output-box {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Types of Functions in PHP</h1>
+
+        <!-- Call by Value -->
+        <div class="function-type">
+            <h2 class="function-title">1. Call by Value</h2>
+            <p>Original value is not modified when passed to function.</p>
+            <pre><code>function increment($num) {
+    $num++;
+    return $num;
+}
+$value = 5;
+increment($value);
+// Original $value remains unchanged</code></pre>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Original value: 5<br>
+                Value after increment inside function: 6<br>
+                Value after function call: 5
+            </div>
+        </div>
+
+        <!-- Call by Reference -->
+        <div class="function-type">
+            <h2 class="function-title">2. Call by Reference</h2>
+            <p>Original value can be modified when passed to function using &amp;.</p>
+            <pre><code>function incrementRef(&amp;$num) {
+    $num++;
+}
+$value = 5;
+incrementRef($value);
+// Original $value is modified</code></pre>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Original value: 5<br>
+                Value after function call: 6
+            </div>
+        </div>
+
+        <!-- Default Arguments -->
+        <div class="function-type">
+            <h2 class="function-title">3. Default Arguments</h2>
+            <p>Parameters can have default values if not provided.</p>
+            <pre><code>function greet($name = "Guest") {
+    return "Hello, $name!";
+}
+greet();      // Uses default
+greet("John"); // Uses provided value</code></pre>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                greet(): Hello, Guest!<br>
+                greet("John"): Hello, John!
+            </div>
+        </div>
+
+        <!-- Parameterized Function -->
+        <div class="function-type">
+            <h2 class="function-title">4. Parameterized Function</h2>
+            <p>Functions that accept parameters/arguments.</p>
+            <pre><code>function add($a, $b) {
+    return $a + $b;
+}
+$result = add(3, 4);</code></pre>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Result of add(3, 4): 7
+            </div>
+        </div>
+
+        <!-- Returning Values -->
+        <div class="function-type">
+            <h2 class="function-title">5. Returning Values</h2>
+            <p>Functions can return values using return statement.</p>
+            <pre><code>function multiply($x, $y) {
+    return $x * $y;
+}
+$product = multiply(5, 6);</code></pre>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Product of 5 and 6: 30
+            </div>
+        </div>
+
+        <!-- Variable-length Arguments -->
+        <div class="function-type">
+            <h2 class="function-title">6. Variable-length Arguments</h2>
+            <p>Functions that accept variable number of arguments.</p>
+            <pre><code>function sum(...$numbers) {
+    $total = 0;
+    foreach($numbers as $num) {
+        $total += $num;
+    }
+    return $total;
+}
+$total = sum(1, 2, 3, 4);</code></pre>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Sum of 1, 2, 3, 4: 10
+            </div>
+        </div>
+
+        <!-- Recursive Functions -->
+        <div class="function-type">
+            <h2 class="function-title">7. Recursive Functions</h2>
+            <p>Functions that call themselves.</p>
+            <pre><code>function factorial($n) {
+    if ($n <= 1) {
+        return 1;
+    }
+    return $n * factorial($n - 1);
+}
+$fact = factorial(5);</code></pre>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Factorial of 5: 120
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

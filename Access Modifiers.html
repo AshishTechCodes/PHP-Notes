@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Access Modifiers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .modifier-card {
+            margin-bottom: 30px;
+            border-left: 4px solid #0d6efd;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">PHP Access Modifiers</h1>
+        
+        <div class="note">
+            <strong>Access Modifiers</strong> determine the visibility and accessibility of class properties and methods in PHP.
+            There are three types: <code>public</code>, <code>protected</code>, and <code>private</code>.
+        </div>
+
+        <!-- Public Modifier -->
+        <div class="card modifier-card">
+            <div class="card-body">
+                <h2 class="card-title">1. Public Access Modifier</h2>
+                <p class="card-text">
+                    Public properties and methods can be accessed from anywhere - outside the class, within the class, and in child classes.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Car {
+    public $model;  // Public property
+    
+    public function start() {  // Public method
+        echo "The {$this->model} is starting.&lt;br&gt;";
+    }
+    
+    public function setModel($model) {
+        $this->model = $model;
+    }
+}
+
+$car = new Car();
+$car->model = "Toyota";  // Direct access to public property
+$car->start();           // Access to public method
+
+$car->setModel("Honda"); // Using public method to set property
+$car->start();
+?&gt;</code></pre>
+                </div>
+                <div class="alert alert-success">
+                    <strong>Key Points:</strong>
+                    <ul>
+                        <li>Most permissive access level</li>
+                        <li>Can be accessed from anywhere in your code</li>
+                        <li>Commonly used for methods that need to be part of the class's public API</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Protected Modifier -->
+        <div class="card modifier-card">
+            <div class="card-body">
+                <h2 class="card-title">2. Protected Access Modifier</h2>
+                <p class="card-text">
+                    Protected properties and methods can only be accessed within the class itself and by inheriting (child) classes.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Vehicle {
+    protected $fuelLevel;  // Protected property
+    
+    protected function refill() {  // Protected method
+        $this->fuelLevel = 100;
+        echo "Fuel tank refilled to {$this->fuelLevel}%&lt;br&gt;";
+    }
+    
+    public function checkFuel() {
+        echo "Current fuel level: {$this->fuelLevel}%&lt;br&gt;";
+    }
+}
+
+class Car extends Vehicle {
+    public function drive() {
+        $this->fuelLevel -= 20;  // Can access protected property from child class
+        echo "Driving... Fuel level now {$this->fuelLevel}%&lt;br&gt;";
+    }
+    
+    public function fullTank() {
+        $this->refill();  // Can access protected method from child class
+    }
+}
+
+$car = new Car();
+// $car->fuelLevel = 50;  // Error: Cannot access protected property directly
+// $car->refill();       // Error: Cannot access protected method directly
+
+$car->fullTank();      // Works - calls protected method through public method
+$car->drive();         // Works - modifies protected property
+$car->checkFuel();     // Works - public method accessing protected property
+?&gt;</code></pre>
+                </div>
+                <div class="alert alert-success">
+                    <strong>Key Points:</strong>
+                    <ul>
+                        <li>Accessible within the class and its child classes</li>
+                        <li>Used when you want to allow inheritance but restrict external access</li>
+                        <li>Commonly used for methods and properties that are part of the class's internal implementation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Private Modifier -->
+        <div class="card modifier-card">
+            <div class="card-body">
+                <h2 class="card-title">3. Private Access Modifier</h2>
+                <p class="card-text">
+                    Private properties and methods can only be accessed within the class that defines them.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class BankAccount {
+    private $balance = 0;  // Private property
+    
+    private function logTransaction($amount) {  // Private method
+        echo "Transaction: $amount. New balance: {$this->balance}&lt;br&gt;";
+    }
+    
+    public function deposit($amount) {
+        if ($amount > 0) {
+            $this->balance += $amount;
+            $this->logTransaction($amount);  // Can access private method within class
+            return true;
+        }
+        return false;
+    }
+    
+    public function withdraw($amount) {
+        if ($amount > 0 && $amount <= $this->balance) {
+            $this->balance -= $amount;
+            $this->logTransaction(-$amount);  // Can access private method within class
+            return true;
+        }
+        return false;
+    }
+    
+    public function getBalance() {
+        return $this->balance;
+    }
+}
+
+$account = new BankAccount();
+$account->deposit(500);
+$account->withdraw(200);
+echo "Current balance: " . $account->getBalance() . "&lt;br&gt;";
+
+// $account->balance = 1000;      // Error: Cannot access private property
+// $account->logTransaction(100); // Error: Cannot access private method
+?&gt;</code></pre>
+                </div>
+                <div class="alert alert-success">
+                    <strong>Key Points:</strong>
+                    <ul>
+                        <li>Most restrictive access level</li>
+                        <li>Only accessible within the class that defines them</li>
+                        <li>Used for implementation details that shouldn't be exposed outside the class</li>
+                        <li>Helps enforce encapsulation by preventing external modification</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Access Modifiers Comparison</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Access Modifier</th>
+                                <th>Accessible in defining class</th>
+                                <th>Accessible in child classes</th>
+                                <th>Accessible from object context</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>public</code></td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td><code>protected</code></td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td><code>private</code></td>
+                                <td>Yes</td>
+                                <td>No</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note mt-3">
+                    <strong>Best Practice:</strong> Start with the most restrictive access level (<code>private</code>) 
+                    and only increase visibility (<code>protected</code> then <code>public</code>) as needed. 
+                    This follows the principle of least privilege and improves encapsulation.
+                </div>
+            </div>
+        </div>
+
+        <!-- Practical Example -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h2 class="card-title">Practical Example Using All Modifiers</h2>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class User {
+    public $username;          // Public - part of API
+    protected $passwordHash;   // Protected - internal but needed by child classes
+    private $lastLogin;        // Private - implementation detail
+    
+    public function __construct($username, $password) {
+        $this->username = $username;
+        $this->setPassword($password);
+        $this->updateLastLogin();
+    }
+    
+    protected function setPassword($password) {
+        $this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    }
+    
+    private function updateLastLogin() {
+        $this->lastLogin = date('Y-m-d H:i:s');
+    }
+    
+    public function login($password) {
+        if (password_verify($password, $this->passwordHash)) {
+            $this->updateLastLogin();
+            echo "User {$this->username} logged in successfully at {$this->lastLogin}&lt;br&gt;";
+            return true;
+        }
+        echo "Login failed for {$this->username}&lt;br&gt;";
+        return false;
+    }
+}
+
+class AdminUser extends User {
+    private $permissions = [];
+    
+    public function addPermission($permission) {
+        $this->permissions[] = $permission;
+    }
+    
+    public function resetPassword($newPassword) {
+        $this->setPassword($newPassword);  // Can access protected parent method
+        echo "Password reset for admin {$this->username}&lt;br&gt;";
+    }
+    
+    // Cannot access $lastLogin directly as it's private in parent
+}
+
+$user = new User('john_doe', 'secret123');
+$user->login('secret123');       // Success
+$user->login('wrongpassword');  // Failure
+
+$admin = new AdminUser('admin', 'admin123');
+$admin->addPermission('delete_users');
+$admin->resetPassword('newAdminPass');
+$admin->login('newAdminPass');   // Success with new password
+
+// $user->passwordHash = 'hack';  // Error - protected
+// $user->updateLastLogin();      // Error - private
+?&gt;</code></pre>
+                </div>
+                <div class="alert alert-info mt-3">
+                    This example demonstrates how to use all three access modifiers in a practical scenario, 
+                    showing proper encapsulation and access control in a user authentication system.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

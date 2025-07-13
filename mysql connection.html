@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Database Operations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .db-card {
+            margin-bottom: 30px;
+            border-left: 4px solid #0d6efd;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .db-title {
+            color: #0d6efd;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-bottom: 15px;
+        }
+        .output-box {
+            background-color: #d1e7dd;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .form-example {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="text-center mb-4">MySQL Database Operations</h1>
+
+        <!-- 1. Database Connection -->
+        <div class="db-card">
+            <h2 class="db-title">1. Database Connection</h2>
+            <p>Connecting to MySQL database using PHP</p>
+            <div class="code-block">
+                &lt;?php<br>
+                $servername = "localhost";<br>
+                $username = "root";<br>
+                $password = "";<br>
+                $dbname = "myDB";<br><br>
+                
+                // Create connection<br>
+                $conn = new mysqli($servername, $username, $password, $dbname);<br><br>
+                
+                // Check connection<br>
+                if ($conn->connect_error) {<br>
+                    die("Connection failed: " . $conn->connect_error);<br>
+                }<br>
+                echo "Connected successfully";<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Connected successfully
+            </div>
+        </div>
+
+        <!-- 2. Create Database -->
+        <div class="db-card">
+            <h2 class="db-title">2. Create Database</h2>
+            <p>Creating a new MySQL database</p>
+            <div class="code-block">
+                &lt;?php<br>
+                $conn = new mysqli("localhost", "root", "");<br><br>
+                
+                // Create database<br>
+                $sql = "CREATE DATABASE myDB";<br>
+                if ($conn->query($sql) {<br>
+                    echo "Database created successfully";<br>
+                } else {<br>
+                    echo "Error creating database: " . $conn->error;<br>
+                }<br>
+                $conn->close();<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Database created successfully
+            </div>
+        </div>
+
+        <!-- 3. Create Table -->
+        <div class="db-card">
+            <h2 class="db-title">3. Create Table</h2>
+            <p>Creating a table in the database</p>
+            <div class="code-block">
+                &lt;?php<br>
+                $conn = new mysqli("localhost", "root", "", "myDB");<br><br>
+                
+                // SQL to create table<br>
+                $sql = "CREATE TABLE users (<br>
+                    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,<br>
+                    firstname VARCHAR(30) NOT NULL,<br>
+                    lastname VARCHAR(30) NOT NULL,<br>
+                    email VARCHAR(50),<br>
+                    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP<br>
+                )";<br><br>
+                
+                if ($conn->query($sql)) {<br>
+                    echo "Table users created successfully";<br>
+                } else {<br>
+                    echo "Error creating table: " . $conn->error;<br>
+                }<br>
+                $conn->close();<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Table users created successfully
+            </div>
+        </div>
+
+        <!-- 4. Insert Record -->
+        <div class="db-card">
+            <h2 class="db-title">4. Insert Record</h2>
+            <p>Inserting data into a table with HTML form</p>
+            <div class="form-example">
+                <h5>HTML Form:</h5>
+                <pre>&lt;form action="insert.php" method="post"&gt;
+    First Name: &lt;input type="text" name="firstname"&gt;&lt;br&gt;
+    Last Name: &lt;input type="text" name="lastname"&gt;&lt;br&gt;
+    Email: &lt;input type="text" name="email"&gt;&lt;br&gt;
+    &lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</pre>
+            </div>
+            <div class="code-block">
+                // insert.php<br>
+                &lt;?php<br>
+                $conn = new mysqli("localhost", "root", "", "myDB");<br><br>
+                
+                $firstname = $_POST['firstname'];<br>
+                $lastname = $_POST['lastname'];<br>
+                $email = $_POST['email'];<br><br>
+                
+                $sql = "INSERT INTO users (firstname, lastname, email)<br>
+                VALUES ('$firstname', '$lastname', '$email')";<br><br>
+                
+                if ($conn->query($sql)) {<br>
+                    echo "New record created successfully";<br>
+                } else {<br>
+                    echo "Error: " . $sql . "&lt;br&gt;" . $conn->error;<br>
+                }<br>
+                $conn->close();<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output (after form submission):</strong><br>
+                New record created successfully
+            </div>
+        </div>
+
+        <!-- 5. Update Record -->
+        <div class="db-card">
+            <h2 class="db-title">5. Update Record</h2>
+            <p>Updating existing records in a table</p>
+            <div class="form-example">
+                <h5>HTML Form:</h5>
+                <pre>&lt;form action="update.php" method="post"&gt;
+    User ID: &lt;input type="text" name="id"&gt;&lt;br&gt;
+    New Email: &lt;input type="text" name="email"&gt;&lt;br&gt;
+    &lt;input type="submit" value="Update"&gt;
+&lt;/form&gt;</pre>
+            </div>
+            <div class="code-block">
+                // update.php<br>
+                &lt;?php<br>
+                $conn = new mysqli("localhost", "root", "", "myDB");<br><br>
+                
+                $id = $_POST['id'];<br>
+                $email = $_POST['email'];<br><br>
+                
+                $sql = "UPDATE users SET email='$email' WHERE id=$id";<br><br>
+                
+                if ($conn->query($sql)) {<br>
+                    echo "Record updated successfully";<br>
+                } else {<br>
+                    echo "Error updating record: " . $conn->error;<br>
+                }<br>
+                $conn->close();<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output (after form submission):</strong><br>
+                Record updated successfully
+            </div>
+        </div>
+
+        <!-- 6. Delete Record -->
+        <div class="db-card">
+            <h2 class="db-title">6. Delete Record</h2>
+            <p>Deleting records from a table</p>
+            <div class="form-example">
+                <h5>HTML Form:</h5>
+                <pre>&lt;form action="delete.php" method="post"&gt;
+    User ID to delete: &lt;input type="text" name="id"&gt;&lt;br&gt;
+    &lt;input type="submit" value="Delete"&gt;
+&lt;/form&gt;</pre>
+            </div>
+            <div class="code-block">
+                // delete.php<br>
+                &lt;?php<br>
+                $conn = new mysqli("localhost", "root", "", "myDB");<br><br>
+                
+                $id = $_POST['id'];<br><br>
+                
+                $sql = "DELETE FROM users WHERE id=$id";<br><br>
+                
+                if ($conn->query($sql)) {<br>
+                    echo "Record deleted successfully";<br>
+                } else {<br>
+                    echo "Error deleting record: " . $conn->error;<br>
+                }<br>
+                $conn->close();<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output (after form submission):</strong><br>
+                Record deleted successfully
+            </div>
+        </div>
+
+        <!-- 7. Display Records -->
+        <div class="db-card">
+            <h2 class="db-title">7. Display Records</h2>
+            <p>Retrieving and displaying data from database</p>
+            <div class="code-block">
+                &lt;?php<br>
+                $conn = new mysqli("localhost", "root", "", "myDB");<br><br>
+                
+                $sql = "SELECT id, firstname, lastname, email FROM users";<br>
+                $result = $conn->query($sql);<br><br>
+                
+                if ($result->num_rows > 0) {<br>
+                    echo "&lt;table class='table'&gt;";<br>
+                    echo "&lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Email&lt;/th&gt;&lt;/tr&gt;";<br>
+                    while($row = $result->fetch_assoc()) {<br>
+                        echo "&lt;tr&gt;";<br>
+                        echo "&lt;td&gt;" . $row["id"] . "&lt;/td&gt;";<br>
+                        echo "&lt;td&gt;" . $row["firstname"] . " " . $row["lastname"] . "&lt;/td&gt;";<br>
+                        echo "&lt;td&gt;" . $row["email"] . "&lt;/td&gt;";<br>
+                        echo "&lt;/tr&gt;";<br>
+                    }<br>
+                    echo "&lt;/table&gt;";<br>
+                } else {<br>
+                    echo "0 results";<br>
+                }<br>
+                $conn->close();<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                <table class='table'>
+                    <tr><th>ID</th><th>Name</th><th>Email</th></tr>
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

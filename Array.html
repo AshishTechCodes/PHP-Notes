@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Arrays Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .array-type {
+            margin-bottom: 30px;
+            border-left: 4px solid #0d6efd;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .array-title {
+            color: #0d6efd;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-bottom: 15px;
+        }
+        .output-box {
+            background-color: #d1e7dd;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="text-center mb-4">PHP Arrays Guide</h1>
+
+        <!-- 1. Basic Array -->
+        <div class="array-type">
+            <h2 class="array-title">1. Basic Array</h2>
+            <p>Creating and accessing a simple indexed array</p>
+            <div class="code-block">
+                // Create array<br>
+                $fruits = array("Apple", "Banana", "Orange");<br><br>
+                
+                // Access elements<br>
+                echo $fruits[0]; // Apple<br>
+                echo $fruits[1]; // Banana<br>
+                echo $fruits[2]; // Orange
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Apple<br>
+                Banana<br>
+                Orange
+            </div>
+        </div>
+
+        <!-- 2. Indexed Array -->
+        <div class="array-type">
+            <h2 class="array-title">2. Indexed Array</h2>
+            <p>Creating and working with indexed arrays</p>
+            <div class="code-block">
+                // Create array (short syntax)<br>
+                $colors = ["Red", "Green", "Blue"];<br><br>
+                
+                // Add element<br>
+                $colors[] = "Yellow";<br><br>
+                
+                // Count elements<br>
+                echo count($colors);<br><br>
+                
+                // Print all elements<br>
+                print_r($colors);
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                4<br>
+                Array<br>
+                (<br>
+                    [0] => Red<br>
+                    [1] => Green<br>
+                    [2] => Blue<br>
+                    [3] => Yellow<br>
+                )
+            </div>
+        </div>
+
+        <!-- 3. Accessing Array Elements -->
+        <div class="array-type">
+            <h2 class="array-title">3. Accessing Array Elements</h2>
+            <p>Different ways to access array elements</p>
+            <div class="code-block">
+                $numbers = [10, 20, 30, 40, 50];<br><br>
+                
+                // Access by index<br>
+                echo $numbers[2]; // 30<br><br>
+                
+                // Access last element<br>
+                echo $numbers[count($numbers)-1]; // 50<br><br>
+                
+                // Access with negative index (PHP 7.1+)<br>
+                echo $numbers[-1]; // 50
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                30<br>
+                50<br>
+                50
+            </div>
+        </div>
+
+        <!-- 4. Associative Array -->
+        <div class="array-type">
+            <h2 class="array-title">4. Associative Array</h2>
+            <p>Arrays with named keys (key-value pairs)</p>
+            <div class="code-block">
+                // Create associative array<br>
+                $person = [<br>
+                    "name" => "John Doe",<br>
+                    "age" => 30,<br>
+                    "email" => "john@example.com"<br>
+                ];<br><br>
+                
+                // Access elements<br>
+                echo $person["name"];<br>
+                echo $person["age"];<br><br>
+                
+                // Add new element<br>
+                $person["city"] = "New York";<br><br>
+                
+                print_r($person);
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                John Doe<br>
+                30<br>
+                Array<br>
+                (<br>
+                    [name] => John Doe<br>
+                    [age] => 30<br>
+                    [email] => john@example.com<br>
+                    [city] => New York<br>
+                )
+            </div>
+        </div>
+
+        <!-- 5. Creating Arrays -->
+        <div class="array-type">
+            <h2 class="array-title">5. Creating Arrays</h2>
+            <p>Different ways to create arrays in PHP</p>
+            <div class="code-block">
+                // 1. Using array()<br>
+                $arr1 = array(1, 2, 3);<br><br>
+                
+                // 2. Using short syntax []<br>
+                $arr2 = [1, 2, 3];<br><br>
+                
+                // 3. Range function<br>
+                $numbers = range(1, 5);<br><br>
+                
+                // 4. Array with mixed types<br>
+                $mixed = [1, "two", 3.0, true];<br><br>
+                
+                print_r($numbers);<br>
+                print_r($mixed);
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Array<br>
+                (<br>
+                    [0] => 1<br>
+                    [1] => 2<br>
+                    [2] => 3<br>
+                    [3] => 4<br>
+                    [4] => 5<br>
+                )<br><br>
+                Array<br>
+                (<br>
+                    [0] => 1<br>
+                    [1] => two<br>
+                    [2] => 3<br>
+                    [3] => 1<br>
+                )
+            </div>
+        </div>
+
+        <!-- 6. Array Operations -->
+        <div class="array-type">
+            <h2 class="array-title">6. Array Operations</h2>
+            <p>Common array operations and functions</p>
+            <div class="code-block">
+                $array1 = ["a", "b", "c"];<br>
+                $array2 = ["d", "e", "f"];<br><br>
+                
+                // Merge arrays<br>
+                $merged = array_merge($array1, $array2);<br><br>
+                
+                // Slice array<br>
+                $slice = array_slice($merged, 2, 3);<br><br>
+                
+                // Search in array<br>
+                $key = array_search("e", $merged);<br><br>
+                
+                // Sort array<br>
+                sort($merged);<br><br>
+                
+                print_r($merged);<br>
+                print_r($slice);<br>
+                echo "Key of 'e': $key";
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Array<br>
+                (<br>
+                    [0] => a<br>
+                    [1] => b<br>
+                    [2] => c<br>
+                    [3] => d<br>
+                    [4] => e<br>
+                    [5] => f<br>
+                )<br><br>
+                Array<br>
+                (<br>
+                    [0] => c<br>
+                    [1] => d<br>
+                    [2] => e<br>
+                )<br><br>
+                Key of 'e': 4
+            </div>
+        </div>
+
+        <!-- 7. Multidimensional Arrays -->
+        <div class="array-type">
+            <h2 class="array-title">7. Multidimensional Arrays</h2>
+            <p>Arrays containing other arrays</p>
+            <div class="code-block">
+                $students = [<br>
+                    ["name" => "John", "grade" => "A"],<br>
+                    ["name" => "Sarah", "grade" => "B"],<br>
+                    ["name" => "Mike", "grade" => "A-"]<br>
+                ];<br><br>
+                
+                // Access element<br>
+                echo $students[1]["name"]; // Sarah<br><br>
+                
+                // Add new student<br>
+                $students[] = ["name" => "Emma", "grade" => "B+"];<br><br>
+                
+                print_r($students);
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Sarah<br><br>
+                Array<br>
+                (<br>
+                    [0] => Array<br>
+                        (<br>
+                            [name] => John<br>
+                            [grade] => A<br>
+                        )<br><br>
+                    [1] => Array<br>
+                        (<br>
+                            [name] => Sarah<br>
+                            [grade] => B<br>
+                        )<br><br>
+                    [2] => Array<br>
+                        (<br>
+                            [name] => Mike<br>
+                            [grade] => A-<br>
+                        )<br><br>
+                    [3] => Array<br>
+                        (<br>
+                            [name] => Emma<br>
+                            [grade] => B+<br>
+                        )<br>
+                )
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Concepts Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .concept-card {
+            margin-bottom: 30px;
+            border-left: 4px solid #0d6efd;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .concept-title {
+            color: #0d6efd;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-bottom: 15px;
+        }
+        .output-box {
+            background-color: #d1e7dd;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="text-center mb-4">PHP Concepts Guide</h1>
+
+        <!-- 1. Include/Require -->
+        <div class="concept-card">
+            <h2 class="concept-title">1. Include & Require</h2>
+            <p>Including external PHP files in your script</p>
+            <div class="code-block">
+                // header.php<br>
+                &lt;?php<br>
+                $title = "My Website";<br>
+                ?&gt;<br><br>
+                
+                // index.php<br>
+                &lt;?php<br>
+                include 'header.php';<br>
+                require 'config.php'; // Stops execution if file not found<br>
+                echo "Welcome to $title";<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Welcome to My Website
+            </div>
+            <div class="alert alert-info mt-3">
+                <strong>Note:</strong> include continues execution if file not found, require stops execution.
+            </div>
+        </div>
+
+        <!-- 2. Filtering -->
+        <div class="concept-card">
+            <h2 class="concept-title">2. Filtering</h2>
+            <p>Validating and sanitizing data with PHP filters</p>
+            <div class="code-block">
+                $email = "user@example.com";<br>
+                $url = "https://example.com";<br><br>
+                
+                // Validate email<br>
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {<br>
+                    echo "Valid email";<br>
+                }<br><br>
+                
+                // Sanitize string<br>
+                $dirty = "&lt;script&gt;alert('xss')&lt;/script&gt;";<br>
+                $clean = filter_var($dirty, FILTER_SANITIZE_STRING);<br>
+                echo $clean;
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Valid email<br>
+                alert('xss')
+            </div>
+        </div>
+
+        <!-- 3. Sessions -->
+        <div class="concept-card">
+            <h2 class="concept-title">3. Sessions</h2>
+            <p>Storing user data across multiple pages</p>
+            <div class="code-block">
+                // page1.php<br>
+                &lt;?php<br>
+                session_start();<br>
+                $_SESSION['username'] = "john_doe";<br>
+                $_SESSION['last_login'] = date('Y-m-d H:i:s');<br>
+                ?&gt;<br><br>
+                
+                // page2.php<br>
+                &lt;?php<br>
+                session_start();<br>
+                echo "Welcome back " . $_SESSION['username'];<br>
+                echo "Last login: " . $_SESSION['last_login'];<br>
+                ?&gt;
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Welcome back john_doe<br>
+                Last login: 2023-06-15 14:30:22
+            </div>
+        </div>
+
+        <!-- 4. Cookies -->
+        <div class="concept-card">
+            <h2 class="concept-title">4. Cookies</h2>
+            <p>Storing small amounts of data on the client side</p>
+            <div class="code-block">
+                // Set cookie<br>
+                setcookie("user", "john_doe", time() + (86400 * 30), "/");<br><br>
+                
+                // Access cookie<br>
+                if (isset($_COOKIE['user'])) {<br>
+                    echo "Welcome " . $_COOKIE['user'];<br>
+                }<br><br>
+                
+                // Delete cookie<br>
+                setcookie("user", "", time() - 3600, "/");
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Welcome john_doe
+            </div>
+        </div>
+
+        <!-- 5. Callback Functions -->
+        <div class="concept-card">
+            <h2 class="concept-title">5. Callback Functions</h2>
+            <p>Passing functions as arguments to other functions</p>
+            <div class="code-block">
+                function greet($name, $callback) {<br>
+                    $greeting = "Hello, $name!";<br>
+                    $callback($greeting);<br>
+                }<br><br>
+                
+                // Define callback<br>
+                function display($message) {<br>
+                    echo $message;<br>
+                }<br><br>
+                
+                // Use callback<br>
+                greet("John", "display");<br><br>
+                
+                // Anonymous callback<br>
+                greet("Sarah", function($msg) {<br>
+                    echo strtoupper($msg);<br>
+                });
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Hello, John!<br>
+                HELLO, SARAH!
+            </div>
+        </div>
+
+        <!-- 6. File Handling -->
+        <div class="concept-card">
+            <h2 class="concept-title">6. File Handling</h2>
+            <p>Reading from and writing to files</p>
+            <div class="code-block">
+                // Write to file<br>
+                $file = fopen("test.txt", "w");<br>
+                fwrite($file, "Hello World!");<br>
+                fclose($file);<br><br>
+                
+                // Read from file<br>
+                $content = file_get_contents("test.txt");<br>
+                echo $content;<br><br>
+                
+                // Append to file<br>
+                file_put_contents("test.txt", "\nNew line", FILE_APPEND);<br><br>
+                
+                // Read line by line<br>
+                $lines = file("test.txt");<br>
+                print_r($lines);
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Hello World!<br><br>
+                Array<br>
+                (<br>
+                    [0] => Hello World!<br>
+                    [1] => New line<br>
+                )
+            </div>
+        </div>
+
+        <!-- 7. Error Handling -->
+        <div class="concept-card">
+            <h2 class="concept-title">7. Error Handling</h2>
+            <p>Handling errors and exceptions</p>
+            <div class="code-block">
+                // Basic error handling<br>
+                function divide($a, $b) {<br>
+                    if ($b == 0) {<br>
+                        trigger_error("Cannot divide by zero", E_USER_ERROR);<br>
+                    }<br>
+                    return $a / $b;<br>
+                }<br><br>
+                
+                // Try-catch block<br>
+                try {<br>
+                    $result = divide(10, 0);<br>
+                    echo $result;<br>
+                } catch (Exception $e) {<br>
+                    echo "Error: " . $e->getMessage();<br>
+                }<br><br>
+                
+                // Custom error handler<br>
+                set_error_handler(function($errno, $errstr) {<br>
+                    echo "Custom handler: $errstr";<br>
+                });<br>
+                echo 10 / 0;
+            </div>
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                Error: Cannot divide by zero<br>
+                Custom handler: Division by zero
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

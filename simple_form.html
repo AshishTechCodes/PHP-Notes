@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Form Handling Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .output-container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="text-center mb-4">PHP Form Handling</h1>
+
+        <!-- Form Example -->
+        <div class="form-container">
+            <h3>Form Submission Example</h3>
+            <p>This form submits data to itself using POST method</p>
+            
+            <div class="code-block bg-light p-3 rounded mb-3">
+                <pre><code>&lt;form action="&lt;?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?&gt;" method="POST"&gt;
+Name: &lt;input type="text" name="name"&gt;&lt;br&gt;
+E-mail: &lt;input type="text" name="email"&gt;&lt;br&gt;
+&lt;input type="submit"&gt;
+&lt;/form&gt;</code></pre>
+            </div>
+
+            <h4>Form Preview:</h4>
+            <form class="mb-4">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="text" class="form-control" id="email" name="email">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Output Example -->
+        <div class="output-container">
+            <h3>Form Output Example</h3>
+            <p>How the submitted data would be displayed:</p>
+            
+            <div class="code-block bg-light p-3 rounded mb-3">
+                <pre><code>Welcome &lt;?php echo $_POST["name"]; ?&gt;&lt;br&gt;
+Your email address is: &lt;?php echo $_POST["email"]; ?&gt;</code></pre>
+            </div>
+
+            <h4>Output Preview:</h4>
+            <div class="p-3 bg-white rounded">
+                <p>Welcome <strong>John Doe</strong></p>
+                <p>Your email address is: <strong>john@example.com</strong></p>
+            </div>
+
+            <div class="alert alert-info mt-3">
+                <strong>Note:</strong> This is a static HTML representation. In a real PHP environment, the output would dynamically show whatever values were submitted through the form.
+            </div>
+        </div>
+
+        <!-- Security Notes -->
+        <div class="alert alert-warning mt-4">
+            <h4>Security Considerations:</h4>
+            <ul>
+                <li>The <code>htmlspecialchars()</code> function prevents XSS attacks when echoing user input</li>
+                <li>For production use, always validate and sanitize user input</li>
+                <li>Consider using prepared statements if storing data in a database</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

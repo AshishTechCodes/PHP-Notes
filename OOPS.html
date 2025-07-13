@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP OOP Concepts</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .concept-card {
+            margin-bottom: 30px;
+            border-left: 4px solid #0d6efd;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">PHP Object-Oriented Programming Concepts</h1>
+        
+        <!-- Class and Object -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">1. Class and Object</h2>
+                <p class="card-text">
+                    A <strong>class</strong> is a blueprint for creating objects. An <strong>object</strong> is an instance of a class.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Fruit {
+    public $name;
+    public $color;
+    
+    function set_name($name, $color) {
+        $this->name = $name;
+        $this->color = $color;
+    }
+    
+    function get_name() {
+        return "Fruit name is {$this->name} and color is {$this->color}.";
+    }
+}
+
+$apple = new Fruit();
+$apple->set_name('Apple', 'red');
+echo $apple->get_name();
+?&gt;</code></pre>
+                </div>
+                <p><strong>Explanation:</strong> Here we create a Fruit class with properties and methods, then instantiate it as an object.</p>
+            </div>
+        </div>
+        
+        <!-- Constructor -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">2. Constructor</h2>
+                <p class="card-text">
+                    <code>__construct()</code> is a special method called automatically when the object is created.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Car {
+    public $name;
+    public $color;
+    
+    function __construct($name, $color) {
+        $this->name = $name;
+        $this->color = $color;
+    }
+    
+    function get_name() {
+        return $this->name;
+    }
+    
+    function get_color() {
+        return $this->color;
+    }
+}
+
+$bmw = new Car("BMW", "red");
+echo $bmw->get_name();
+echo "&lt;br&gt;";
+echo $bmw->get_color();
+?&gt;</code></pre>
+                </div>
+                <p><strong>Use case:</strong> Cleaner and faster object initialization when you already know the values at creation time.</p>
+            </div>
+        </div>
+        
+        <!-- Destructor -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">3. Destructor</h2>
+                <p class="card-text">
+                    <code>__destruct()</code> is called automatically when the object is destroyed or script ends.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Book {
+    public $name;
+    public $color;
+    
+    function __construct($name, $color) {
+        $this->name = $name;
+        $this->color = $color;
+    }
+    
+    function __destruct() {
+        echo "The book is {$this->name} and color is {$this->color}.";
+    }
+}
+
+$physics = new Book("Java", "yellow");
+?&gt;</code></pre>
+                </div>
+                <p><strong>Use case:</strong> When you need to do something right before the object is destroyed, like saving state or freeing resources.</p>
+            </div>
+        </div>
+        
+        <!-- Inheritance -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">4. Inheritance</h2>
+                <p class="card-text">
+                    Inheritance allows a class to inherit properties and methods from another class.
+                </p>
+                
+                <h3 class="mt-4">Single Inheritance</h3>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Pen {
+    public $name;
+    public $color;
+    
+    public function __construct($name, $color) {
+        $this->name = $name;
+        $this->color = $color;
+    }
+    
+    public function intro() {
+        echo "A {$this->name} is a Pen and color of pen is {$this->color}.";
+    }
+}
+
+class NewPen extends Pen {
+    public function message() {
+        echo "New pen are not write that much good";
+    }
+}
+
+$pen_new = new NewPen("Fountain", "red");
+$pen_new->message();
+echo "&lt;br&gt;";
+$pen_new->intro();
+?&gt;</code></pre>
+                </div>
+                
+                <h3 class="mt-4">Multilevel Inheritance</h3>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Limit {
+    public $num1;
+    public $num2;
+    
+    public function __construct($num1, $num2) {
+        $this->num1 = $num1;
+        $this->num2 = $num2;
+    }
+    
+    public function limitclass2() {
+        echo "The numbers are ($this->num1) and ($this->num2)";
+    }
+}
+
+class Add extends Limit {
+    public function addclass() {
+        $a = ($this->num1 + $this->num2);
+        echo "$this->num1 + $this->num2 = $a";
+    }
+}
+
+class Minus extends Add {
+    public function minusclass() {
+        $b = ($this->num1 - $this->num2);
+        echo "&lt;br&gt;$this->num1 - $this->num2 = $b";
+    }
+}
+
+class Div extends Minus {
+    public function divclass() {
+        $c = ($this->num1 / $this->num2);
+        echo "&lt;br&gt;$this->num1 / $this->num2 = $c";
+    }
+}
+
+$answer = new Div(20, 5);
+$answer->addclass();
+$answer->minusclass();
+$answer->divclass();
+?&gt;</code></pre>
+                </div>
+                
+                <h3 class="mt-4">Hierarchical Inheritance</h3>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Animal {
+    public function sleep() {
+        echo "Sleeping&lt;br&gt;";
+    }
+}
+
+class Dog extends Animal {
+    public function bark() {
+        echo "Woof!&lt;br&gt;";
+    }
+}
+
+class Cat extends Animal {
+    public function meow() {
+        echo "Meow!&lt;br&gt;";
+    }
+}
+
+$dog = new Dog();
+$dog->sleep();
+$dog->bark();
+
+$cat = new Cat();
+$cat->sleep();
+$cat->meow();
+?&gt;</code></pre>
+                </div>
+                
+                <h3 class="mt-4">Multiple Inheritance (via Interfaces)</h3>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+interface A {
+    public function methodA();
+}
+
+interface B {
+    public function methodB();
+}
+
+class C implements A, B {
+    public function methodA() {
+        echo "Method A from Interface A&lt;br&gt;";
+    }
+    
+    public function methodB() {
+        echo "Method B from Interface B&lt;br&gt;";
+    }
+}
+
+$obj = new C();
+$obj->methodA();
+$obj->methodB();
+?&gt;</code></pre>
+                </div>
+                
+                <h3 class="mt-4">Hybrid Inheritance</h3>
+                <p>PHP doesn't support true hybrid inheritance directly, but you can simulate it using classes and interfaces combined.</p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+interface CanFly {
+    public function fly();
+}
+
+interface CanSwim {
+    public function swim();
+}
+
+trait AnimalSound {
+    public function makeSound() {
+        echo "Animal makes a sound&lt;br&gt;";
+    }
+}
+
+class Animal1 {
+    public function eat() {
+        echo "Animal is eating&lt;br&gt;";
+    }
+}
+
+class Bird extends Animal1 implements CanFly, CanSwim {
+    use AnimalSound;
+    
+    public function fly() {
+        echo "Bird is flying&lt;br&gt;";
+    }
+    
+    public function swim() {
+        echo "Bird is swimming&lt;br&gt;";
+    }
+}
+
+class Duck extends Bird {
+    public function quack() {
+        echo "Duck says quack!&lt;br&gt;";
+    }
+}
+
+$duck = new Duck();
+$duck->eat();        // From Animal
+$duck->fly();        // From CanFly interface
+$duck->swim();       // From CanSwim interface
+$duck->makeSound();  // From trait
+$duck->quack();      // From Duck itself
+?&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Polymorphism -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">5. Polymorphism</h2>
+                <p class="card-text">
+                    Polymorphism allows objects of different classes to be treated as objects of a common super class.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+interface Shape {
+    public function calculateArea();
+}
+
+class Circle implements Shape {
+    private $radius;
+    
+    public function __construct($radius) {
+        $this->radius = $radius;
+    }
+    
+    public function calculateArea() {
+        return pi() * pow($this->radius, 2);
+    }
+}
+
+class Rectangle implements Shape {
+    private $width;
+    private $height;
+    
+    public function __construct($width, $height) {
+        $this->width = $width;
+        $this->height = $height;
+    }
+    
+    public function calculateArea() {
+        return $this->width * $this->height;
+    }
+}
+
+$circle = new Circle(5);
+$rectangle = new Rectangle(4, 6);
+
+$shapes = [$circle, $rectangle];
+
+foreach ($shapes as $shape) {
+    echo "Area: " . $shape->calculateArea() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+                </div>
+                <p><strong>Explanation:</strong> Both Circle and Rectangle implement the Shape interface, allowing them to be treated uniformly.</p>
+            </div>
+        </div>
+        
+        <!-- Encapsulation -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">6. Encapsulation</h2>
+                <p class="card-text">
+                    Encapsulation is the bundling of data with the methods that operate on that data, often by restricting direct access to some of the object's components.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class BankAccount {
+    private $balance = 0;
+    
+    public function deposit($amount) {
+        if ($amount > 0) {
+            $this->balance += $amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public function withdraw($amount) {
+        if ($amount > 0 && $amount <= $this->balance) {
+            $this->balance -= $amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public function getBalance() {
+        return $this->balance;
+    }
+}
+
+$account = new BankAccount();
+$account->deposit(1000);
+$account->withdraw(500);
+echo "Current balance: " . $account->getBalance();
+?&gt;</code></pre>
+                </div>
+                <p><strong>Explanation:</strong> The balance property is private and can only be modified through controlled methods.</p>
+            </div>
+        </div>
+        
+        <!-- Abstraction -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">7. Abstraction</h2>
+                <p class="card-text">
+                    Abstraction means hiding the complex implementation details and showing only the necessary features of an object.
+                </p>
+                <div class="code-block">
+                    <pre><code>&lt;?php
+abstract class Vehicle {
+    abstract public function startEngine();
+    abstract public function stopEngine();
+    
+    public function honk() {
+        echo "Honk! Honk!&lt;br&gt;";
+    }
+}
+
+class Car extends Vehicle {
+    public function startEngine() {
+        echo "Car engine started&lt;br&gt;";
+    }
+    
+    public function stopEngine() {
+        echo "Car engine stopped&lt;br&gt;";
+    }
+}
+
+class Motorcycle extends Vehicle {
+    public function startEngine() {
+        echo "Motorcycle engine started&lt;br&gt;";
+    }
+    
+    public function stopEngine() {
+        echo "Motorcycle engine stopped&lt;br&gt;";
+    }
+}
+
+$car = new Car();
+$car->startEngine();
+$car->honk();
+$car->stopEngine();
+
+$bike = new Motorcycle();
+$bike->startEngine();
+$bike->stopEngine();
+?&gt;</code></pre>
+                </div>
+                <p><strong>Explanation:</strong> The abstract Vehicle class defines what methods must be implemented, but not how they should be implemented.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

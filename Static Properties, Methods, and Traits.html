@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Static Properties, Methods, and Traits</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .concept-card {
+            margin-bottom: 30px;
+            border-left: 4px solid #0d6efd;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">PHP Static Properties, Methods, and Traits</h1>
+
+        <!-- Static Properties and Methods -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">1. Static Properties and Methods</h2>
+                
+                <h3 class="mt-4">Static Properties</h3>
+                <p>Static properties belong to the class itself rather than any object instance. They're shared across all instances of the class.</p>
+                
+                <h3 class="mt-4">Static Methods</h3>
+                <p>Static methods can be called without creating an instance of the class. They can only operate on static properties.</p>
+                
+                <div class="code-block">
+                    <pre><code>&lt;?php
+class Counter {
+    public static $count = 0;  // Static property
+    
+    public function __construct() {
+        self::$count++;  // Access static property using self::
+    }
+    
+    public static function getCount() {  // Static method
+        return self::$count;
+    }
+    
+    public static function resetCount() {
+        self::$count = 0;
+    }
+}
+
+// Create objects
+$c1 = new Counter();
+$c2 = new Counter();
+$c3 = new Counter();
+
+// Access static property
+echo "Count: " . Counter::$count . "\n";  // Output: 3
+
+// Call static method
+echo "Count via method: " . Counter::getCount() . "\n";  // Output: 3
+
+// Reset count
+Counter::resetCount();
+echo "After reset: " . Counter::getCount() . "\n";  // Output: 0
+?&gt;</code></pre>
+                </div>
+                
+                <div class="alert alert-success">
+                    <strong>Key Points:</strong>
+                    <ul>
+                        <li>Accessed using <code>self::</code> inside the class or <code>ClassName::</code> outside</li>
+                        <li>Shared across all instances</li>
+                        <li>Don't require object instantiation</li>
+                        <li>Can't use <code>$this</code> in static methods</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Traits -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">2. Traits</h2>
+                <p>Traits are mechanisms for code reuse in single inheritance languages like PHP. They allow you to reuse methods in multiple classes.</p>
+                
+                <div class="code-block">
+                    <pre><code>&lt;?php
+trait Logger {
+    public function log($message) {
+        echo "[" . date('Y-m-d H:i:s') . "] " . $message . "\n";
+    }
+}
+
+trait Timestamp {
+    public function currentTimestamp() {
+        return time();
+    }
+}
+
+class User {
+    use Logger, Timestamp;  // Use multiple traits
+    
+    private $name;
+    
+    public function __construct($name) {
+        $this->name = $name;
+        $this->log("User $name created at " . $this->currentTimestamp());
+    }
+}
+
+class Product {
+    use Logger;
+    
+    private $id;
+    
+    public function __construct($id) {
+        $this->id = $id;
+        $this->log("Product $id created");
+    }
+}
+
+$user = new User("John Doe");
+$product = new Product(123);
+?&gt;</code></pre>
+                </div>
+                
+                <div class="alert alert-success">
+                    <strong>Key Points:</strong>
+                    <ul>
+                        <li>Defined with <code>trait</code> keyword</li>
+                        <li>Included in classes with <code>use</code> keyword</li>
+                        <li>Can have methods and abstract methods</li>
+                        <li>Support method visibility (public, protected, private)</li>
+                        <li>Can use multiple traits in one class</li>
+                        <li>Solve the single inheritance limitation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Combined Example -->
+        <div class="card concept-card">
+            <div class="card-body">
+                <h2 class="card-title">3. Complete Example Combining All Concepts</h2>
+                
+                <div class="code-block">
+                    <pre><code>&lt;?php
+trait TaxCalculator {
+    public static $taxRate = 0.20;  // Static property in trait
+    
+    public static function calculateTax($amount) {  // Static method in trait
+        return $amount * self::$taxRate;
+    }
+}
+
+class Invoice {
+    use TaxCalculator;
+    
+    private static $invoiceCount = 0;  // Static property
+    private $number;
+    private $amount;
+    
+    public function __construct($amount) {
+        self::$invoiceCount++;
+        $this->number = self::$invoiceCount;
+        $this->amount = $amount;
+    }
+    
+    public static function getTotalInvoices() {  // Static method
+        return self::$invoiceCount;
+    }
+    
+    public function getTotal() {
+        $tax = self::calculateTax($this->amount);  // Using trait's static method
+        return $this->amount + $tax;
+    }
+    
+    public function printDetails() {
+        echo "Invoice #{$this->number}\n";
+        echo "Amount: {$this->amount}\n";
+        echo "Tax (" . (self::$taxRate * 100) . "%): " . self::calculateTax($this->amount) . "\n";
+        echo "Total: {$this->getTotal()}\n";
+    }
+}
+
+// Change tax rate (affects all instances)
+Invoice::$taxRate = 0.15;
+
+$inv1 = new Invoice(100);
+$inv2 = new Invoice(200);
+
+$inv1->printDetails();
+$inv2->printDetails();
+
+echo "Total invoices created: " . Invoice::getTotalInvoices() . "\n";
+echo "Current tax rate: " . Invoice::$taxRate * 100 . "%\n";
+?&gt;</code></pre>
+                </div>
+                
+                <div class="alert alert-info">
+                    <strong>Output:</strong>
+                    <pre>
+Invoice #1
+Amount: 100
+Tax (15%): 15
+Total: 115
+Invoice #2
+Amount: 200
+Tax (15%): 30
+Total: 230
+Total invoices created: 2
+Current tax rate: 15%</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Differences -->
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Key Differences Summary</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Feature</th>
+                                <th>Static Properties/Methods</th>
+                                <th>Traits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Purpose</td>
+                                <td>Class-level functionality</td>
+                                <td>Code reuse</td>
+                            </tr>
+                            <tr>
+                                <td>Instantiation</td>
+                                <td>Not required</td>
+                                <td>Not instantiated directly</td>
+                            </tr>
+                            <tr>
+                                <td>Inheritance</td>
+                                <td>Inherited by child classes</td>
+                                <td>Composable into classes</td>
+                            </tr>
+                            <tr>
+                                <td><code>$this</code> usage</td>
+                                <td>Not allowed in static methods</td>
+                                <td>Allowed in trait methods</td>
+                            </tr>
+                            <tr>
+                                <td>Visibility</td>
+                                <td>Can be public/protected/private</td>
+                                <td>Methods can have visibility</td>
+                            </tr>
+                            <tr>
+                                <td>Overriding</td>
+                                <td>Can be redeclared in child classes</td>
+                                <td>Conflict resolution needed for same method names</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
